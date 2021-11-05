@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>GyroPalm JS SDK Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <script src="gyropalm.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>GyroPalm Web Control</h1>
+  <p>Example demo page for GyroPalm JavaScript SDK</p> 
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-5">
+		<div class="panel panel-primary">
+		  <div class="panel-heading">List Wearables</div>
+		  <div class="panel-body">
+			  <i class="text-muted">Using your GyroPalm API key, you can retrieve an array of GyroPalm Wearables.</i>
+		  </div>
+		</div>
+		<div class="panel panel-primary">
+		  <div class="panel-heading">User Info</div>
+		  <div class="panel-body">
+			  <i class="text-muted">Using your GyroPalm API key, you can retrieve information about the account.</i>
+		  </div>
+		</div>
+		<div class="panel panel-primary">
+		  <div class="panel-heading">Connect to Wearable</div>
+		  <div class="panel-body">
+			  <i class="text-muted">Once connected to a Wearable, you can send and retrieve data to and from the wearable (pub &amp; sub respectively).</i>
+		  </div>
+		</div>
+    </div>
+    <div class="col-sm-7">
+		<div class="panel panel-primary">
+		  <div class="panel-heading">Incoming Events</div>
+		  <div class="panel-body">
+			<i class="text-muted">Incoming data objects from the wearable are shown here.</i><br />
+			<textarea data-gramm_editor="false" spellcheck="false" id="output" rows="10" wrap="soft" class="form-control" style="background-color: black; color: lightgreen; overflow: auto;"></textarea>
+		  </div>
+		</div>
+		<div class="panel panel-primary">
+		  <div class="panel-heading">Outgoing Commands</div>
+		  <div class="panel-body">
+			<i class="text-muted">You can send commands and messages to the wearable here.</i><br />
+		  </div>
+		</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
