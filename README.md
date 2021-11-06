@@ -7,7 +7,7 @@ The GyroPalm JavaScript software development kit (SDK) enables developers to wir
 This library exposes the GyroPalm object, which encapsulates secure websockets (WSS) with our real-time low latency server. Using enhanced methods and function callbacks, gestures, commands, and other data can be retrieved from the wearable in milliseconds. Using the GyroPalm object, developers can write applications that retrieve information about a user as well as their wearables.
 
 ## Requirements ##
-To implement this SDK for its intended use, it is highly recommended that the developer has a GyroPalm Developer Kit or equivalent GyroPalm package to do proper testing. To order one or more wearables, visit our [online store](https://gyropalm.com/order/).
+To implement this SDK for its intended use, it is highly recommended that the developer has a GyroPalm Developer Kit or equivalent GyroPalm package to do proper testing. To order one or more wearables, visit the [GyroPalm Online store](https://gyropalm.com/order/).
 
 In addition, both the end-user must use a modern web browser such as Chrome, Firefox, Edge, or Safari with HTML5 capabilities. The developer may choose to use jQuery or equivalent library alongside this SDK for convenience, but it is not required.
 
@@ -23,7 +23,7 @@ To use the CDN Hosted Link, include the following in your HTML:
 ### GyroPalm Hosted Link ###
 To use the GyroPalm Hosted Link, include the following in your HTML:
 ```html
-<script src="https://app.gyropalm.com/sdk/javascript/gyropalm.min.js"></script>
+<script src="https://app.gyropalm.com/api/sdk/javascript/gyropalm.min.js"></script>
 ```
 
 ### Download Release from GitHub ###
