@@ -8,7 +8,32 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   
-  <script src="gyropalm.min.js"></script>
+  <script src="gyropalm.js"></script>
+  
+  <script>
+	function printData(stuff) {
+		console.log(stuff);
+	}
+	
+	//Instantiate GyroPalm SDK object
+	/*
+	var gp = new GyroPalm("gp36185824", "f40f54d7c2bf138");
+	gp.autoReconnect = false;
+	gp.enableVerbose();
+	*/
+	/*
+	var gp = new GyroPalm();	//basic instantiation
+	gp.enableVerbose();	//enable console messages
+	gp.getAccountInfo("f40f54d7c2bf138", printData);	//show account info object
+	gp.getWearables("", printData);	//no need to respecify the API key
+	gp.connect("gp36185824");	//connect to wearableID
+	*/
+	/*
+	var gp = new GyroPalm("gp36185824", "f40f54d7c2bf138");
+	gp.connect();
+	gp.setEventCallback(printData);
+	*/
+  </script>
 </head>
 <body>
 
