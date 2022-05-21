@@ -105,6 +105,13 @@
 			showAlert("Logs cleared successfully", "success");
 		});
 		
+		$("#btnRequestStat").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("");
+			gp.sendStatusRequest();
+		});
+		
 		$("#btnVibrateTap").on("click", async function(e) {
 			e.preventDefault();
 
@@ -274,6 +281,7 @@ function onConnection(obj) {
 				  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Payload Examples
 				  <span class="caret"></span></button>
 				  <ul class="dropdown-menu">
+					<li><a id="btnRequestStat">Request Device Status</a></li>
 					<li><a id="btnVibrateTap">Vibrate Tap</a></li>
 					<li><a id="btnVibratePress">Vibrate Press</a></li>
 					<li><a id="btnVibrateHold">Vibrate Hold</a></li>
