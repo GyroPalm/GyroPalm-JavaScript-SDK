@@ -5,82 +5,322 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+  .greenBox {
+	background-color: black !important; color: lightgreen; overflow: auto;
+  }
+  a:hover {
+   cursor:pointer;
+  }
+  </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  
-  <script src="gyropalm.js"></script>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css" rel="stylesheet">	
+  <script src="scriptHighlighter.js"></script>
+  <script src="gyropalm.min.js"></script>
   
   <script>
 	function printData(stuff) {
 		console.log(stuff);
 	}
 	
-	//Instantiate GyroPalm SDK object
-	/*
-	var gp = new GyroPalm("gp36185824", "f40f54d7c2bf138");
-	gp.autoReconnect = false;
-	gp.enableVerbose();
-	*/
-	/*
-	var gp = new GyroPalm();	//basic instantiation
-	gp.enableVerbose();	//enable console messages
-	gp.getAccountInfo("f40f54d7c2bf138", printData);	//show account info object
-	gp.getWearables("", printData);	//no need to respecify the API key
-	gp.connect("gp36185824");	//connect to wearableID
-	*/
-	/*
-	var gp = new GyroPalm("gp36185824", "f40f54d7c2bf138");
-	gp.connect();
-	gp.setEventCallback(printData);
-	*/
+	function appendOutput(out) {
+		out = JSON.stringify(out);
+		$("#output").val($("#output").val() + out + "\n");
+		var psconsole = $('#output');
+		if(psconsole.length)
+		   psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());
+	}
+	
+	var gp = null;
+	var eventsRegistered = false;
+	
+	$(document).ready(function(){
+	
+		$("#btnDeclare").on("click", function(e) {
+			e.preventDefault();
+
+			var mT = $("#txtAPIkey").val();
+			gp = new GyroPalm(mT, "");
+			gp.enableVerbose(true);
+			showAlert("GyroPalm object declared successfully", "success");
+		});
+		
+		$("#btnListWearables").on("click", function(e) {
+			e.preventDefault();
+			
+			gp.getWearables("", appendOutput);	//no need to respecify the API key
+		});
+		
+		$("#btnAccountInfo").on("click", function(e) {
+			e.preventDefault();
+
+			gp.getAccountInfo("", appendOutput);	//show account info object
+		});
+		
+		$("#btnConnect").on("click", function(e) {
+			e.preventDefault();
+
+			if (eventsRegistered != true) {
+				showAlert("Please click Register Callbacks first!", "danger");
+				$([document.documentElement, document.body]).animate({
+						scrollTop: $("#pnlEvents").offset().top
+					}, 2000);
+			} else {
+				var wearableID = $("#txtWearableID").val();
+				gp.connect(wearableID);	//connect to wearableID
+			}
+		});
+		
+		$("#btnDisconnect").on("click", function(e) {
+			e.preventDefault();
+
+			gp.disconnect();
+		});
+		
+		$("#btnRegisterEvents").on("click", function(e) {
+			e.preventDefault();
+
+			gp.setEventCallback(appendOutput);
+			gp.setConnectionCallback(appendOutput);
+			gp.setVerboseCallback(appendOutput);
+			eventsRegistered = true;
+			showAlert("Realtime callbacks registered successfully", "success");
+		});
+		
+		$("#btnSend").on("click", async function(e) {
+			e.preventDefault();
+
+			var txtSend = $("#txtSend").val();
+			var isSent = gp.sendDataObj(txtSend);
+			if (isSent) {
+				showAlert("Message sent", "success");
+			}
+		});
+		
+		$("#btnClear").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#output").val("");
+			showAlert("Logs cleared successfully", "success");
+		});
+		
+		$("#btnVibrateTap").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("{\"command\":\"vibrateTap\"}");
+		});
+		
+		$("#btnVibratePress").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("{\"command\":\"vibratePress\"}");
+		});
+		
+		$("#btnVibrateHold").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("{\"command\":\"vibrateHold\"}");
+		});
+		
+		$("#btnSendAlert").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("{\"command\":\"This is an alert msg\"}");
+		});
+		
+		$("#btnSetTime").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("{\"command\":\"setTime\"}");
+		});
+	});
+
+
   </script>
 </head>
 <body>
 
 <div class="jumbotron text-center">
   <h1>GyroPalm Web Control</h1>
-  <p>Example demo page for GyroPalm JavaScript SDK</p> 
+  <p>Educational demo page for GyroPalm JavaScript SDK</p> 
 </div>
   
 <div class="container">
   <div class="row">
     <div class="col-sm-5">
 		<div class="panel panel-primary">
+		  <div class="panel-heading">Declare GyroPalmRealtime Object</div>
+		  <div class="panel-body">
+			  <i class="text-muted">Using your GyroPalm API key or masterToken, you can create a new <strong>realtime</strong> object.</i>
+<code>
+// Define params later:
+var gp = new GyroPalm();
+
+// Instantiate with params:
+var gp = new GyroPalm("yourAPIkey", "wearableID");
+
+gp.enableVerbose(true);	//Include to enable console log
+</code>
+			<hr>
+			<div class="form-group">
+				<label for="txtAPIkey">API Key</label>
+				<input type="text" class="form-control" id="txtAPIkey" placeholder="m123456789">
+			</div>
+			<button type="button" class="btn btn-primary btn-block" id="btnDeclare">Try It</button>
+		  </div>
+		</div>
+		<div class="panel panel-primary">
 		  <div class="panel-heading">List Wearables</div>
 		  <div class="panel-body">
 			  <i class="text-muted">Using your GyroPalm API key, you can retrieve an array of GyroPalm Wearables.</i>
+<code>
+// If you have provided API key:
+gp.getWearables("", onEventReceived);
+  // no need to repeat the API key
+
+// If you defined without params:
+gp.getWearables("yourAPIkey", onEventReceived);
+</code>
+			<hr>
+			<button type="button" class="btn btn-primary btn-block" id="btnListWearables">Try It</button>
 		  </div>
 		</div>
 		<div class="panel panel-primary">
 		  <div class="panel-heading">User Info</div>
 		  <div class="panel-body">
 			  <i class="text-muted">Using your GyroPalm API key, you can retrieve information about the account.</i>
+<code>
+// If you have provided API key:
+gp.getAccountInfo("", onEventReceived);
+  // no need to repeat the API key
+
+// If you defined without params:
+gp.getAccountInfo("yourAPIkey", onEventReceived);
+</code>
+			<hr>
+			<button type="button" class="btn btn-primary btn-block" id="btnAccountInfo">Try It</button>
 		  </div>
 		</div>
 		<div class="panel panel-primary">
 		  <div class="panel-heading">Connect to Wearable</div>
 		  <div class="panel-body">
 			  <i class="text-muted">Once connected to a Wearable, you can send and retrieve data to and from the wearable (pub &amp; sub respectively).</i>
+<code>
+// Equivalent of setEventCallback and setConnectionCallback
+// You can set callbacks and then connect:
+gp.connect("wearableID", onEventReceived, onConnection);
+
+// If you have already defined callbacks, connect with wearableID:
+gp.connect("wearableID");
+
+// If you have already connected prior and want to re-connect:
+gp.connect();
+</code>
+			<hr>
+			<div class="form-group">
+				<label for="txtWearableID">WearableID</label>
+				<input type="text" class="form-control" id="txtWearableID" placeholder="gp123456">
+			</div>
+			<button type="button" class="btn btn-success btn-block" id="btnConnect">Connect</button>
+			<button type="button" class="btn btn-danger btn-block" id="btnDisconnect">Disconnect</button>
 		  </div>
 		</div>
     </div>
     <div class="col-sm-7">
-		<div class="panel panel-primary">
-		  <div class="panel-heading">Incoming Events</div>
+		<div class="panel panel-primary" id="pnlEvents">
+		  <div class="panel-heading">Register for Events</div>
 		  <div class="panel-body">
-			<i class="text-muted">Incoming data objects from the wearable are shown here.</i><br />
-			<textarea data-gramm_editor="false" spellcheck="false" id="output" rows="10" wrap="soft" class="form-control" style="background-color: black; color: lightgreen; overflow: auto;"></textarea>
+			<i class="text-muted">To receive incoming events, define your callback functions and register the callback events.</i><br />
+<code>
+// Run "onEventReceived" callback when new msg
+gp.setEventCallback(onEventReceived);
+
+// Run "onConnection" callback when connected/disconnected
+gp.setConnectionCallback(onConnection);
+
+// Optional. If you want to retrieve verbose messages
+gp.setVerboseCallback(onVerbose);
+
+// Example functions to print out your callbacks:
+
+function onEventReceived(obj) {
+	console.log(obj);
+}
+
+function onConnection(obj) {
+	console.log(obj);
+}
+</code>
+			<hr>
+			<button type="button" class="btn btn-primary btn-block" id="btnRegisterEvents">Register Callbacks</button>
+		  </div>
+		</div>
+		<div class="panel panel-primary">
+		  <div class="panel-heading">Test Incoming Events</div>
+		  <div class="panel-body">
+			<i class="text-muted">Incoming data objects from the wearable are shown here:</i><br />
+			<textarea data-gramm_editor="false" spellcheck="false" id="output" rows="10" wrap="soft" class="form-control greenBox"></textarea>
+			<hr>
+			<button type="button" class="btn btn-primary btn-block" id="btnClear">Clear Logs</button>
 		  </div>
 		</div>
 		<div class="panel panel-primary">
 		  <div class="panel-heading">Outgoing Commands</div>
 		  <div class="panel-body">
 			<i class="text-muted">You can send commands and messages to the wearable here.</i><br />
+			<div class="pull-right">
+				<div class="dropdown">
+				  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Payload Examples
+				  <span class="caret"></span></button>
+				  <ul class="dropdown-menu">
+					<li><a id="btnVibrateTap">Vibrate Tap</a></li>
+					<li><a id="btnVibratePress">Vibrate Press</a></li>
+					<li><a id="btnVibrateHold">Vibrate Hold</a></li>
+					<li><a id="btnSendAlert">Send Alert Msg</a></li>
+					<li><a id="btnSetTime">Set Local Time</a></li>
+				  </ul>
+				</div>
+			</div>
+<textarea data-gramm_editor="false" spellcheck="false" rows="4" wrap="soft" class="form-control greenBox" id="txtSend">
+{\"command\":\"This is an alert msg\"}
+</textarea><br />
+<button type="button" class="btn btn-primary btn-block" id="btnSend">Send to Wearable</button>
 		  </div>
 		</div>
     </div>
   </div>
 </div>
 
+	<!-- for Bootstrap-notify -->
+	<script src="https://gyropalm.com/order/libs/js/bootstrap-notify.min.js"></script>
+
+	<script>
+	//show temporary notification
+	function showAlert(msg, color)
+	{
+		$.notify(
+		  { message: msg},
+		  {	
+			type: color,
+			placement: {
+				from: 'top',
+				align: 'right'
+			},
+			offset: {
+				x: 20,
+				y: 65
+			},
+			spacing: 10,
+			z_index: 10000,
+			delay: 2500,
+			mouse_over: null,
+			animate: {
+			  enter: 'animated fadeInDown',
+			  exit: 'animated fadeOutUp'
+			}
+		  });
+	}
+	</script>
 </body>
 </html>
