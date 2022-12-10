@@ -70,6 +70,28 @@ To instantiate a GyroPalm object, first include the `gyropalm.min.js` library. T
 </script>
 ```
 
+## Using GyroPalm JS SDK on other websites ##
+GyroPalm is capable of running JavaScript on other websites to enhance accessibility and provide a hands-free interface. By using this functionality, you agree to use the SDK at your own risk. You also agree to comply with local and international laws and regulations.
+
+The GyroPalm JS SDK is a powerful tool that enables authorized users to run, trigger, and fetch data on websites and web apps that they have access to. With a few lines of JavaScript, you can implement a Chrome or Firefox extension that can make GyroPalm work with virtually any website or platform. For example, users can perform gestures on a GyroPalm wearable to scroll, trigger buttons, fill forms, etc.
+
+### Load GyroPalm JS SDK on a site using jQuery ###
+```javascript
+$.getScript('https://cdn.jsdelivr.net/gh/GyroPalm/GyroPalm-JavaScript-SDK@latest/gyropalm.min.js')
+```
+
+### Load GyroPalm JS SDK on a site without jQuery ###
+```javascript
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = 'https://cdn.jsdelivr.net/gh/GyroPalm/GyroPalm-JavaScript-SDK@latest/gyropalm.min.js';
+document.head.appendChild(script);
+```
+
+You can choose to load the code above using a Chrome extension such as [Run JavaScript](https://chrome.google.com/webstore/detail/run-javascript/lmilalhkkdhfieeienjbiicclobibjao) or by writing your own custom Chrome extension. Alternatively, you can run the code in the browser's Developer Console. Once the SDK is loaded, you can create a new instance of the `GyroPalm()` class and attach the event callbacks as needed.
+
+By writing additional code in the event callbacks, you can make different websites respond to your various GyroPalm gestures.
+
 ## Copyright and License ##
 The MIT License (MIT) Copyright (c) 2015-2021 by GyroPalm, LLC. Code written by Dominick Lee for GyroPalm.
 
