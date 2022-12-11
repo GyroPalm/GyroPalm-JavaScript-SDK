@@ -134,8 +134,8 @@
     transition: opacity var(--opacity-transition-duration) ease-in-out;
 }
 
-.arrow_menu_triangle:focus{
-	outline: none;
+.arrow_menu_triangle :focus{
+	outline: 0;
 }
 
 .triangle_left{
