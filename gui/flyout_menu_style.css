@@ -134,6 +134,10 @@
     transition: opacity var(--opacity-transition-duration) ease-in-out;
 }
 
+.arrow_menu_triangle:focus{
+	outline: none;
+}
+
 .triangle_left{
     border-right: var(--arrow_size) solid var(--triangle_color)!important;
 }
