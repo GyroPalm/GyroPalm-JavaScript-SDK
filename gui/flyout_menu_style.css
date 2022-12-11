@@ -19,7 +19,7 @@
     --arrow_menu_left_side_color:#006f9e;
     --triangle_color: white;
 
-    /*social_media_icon_flyout_parent (right side) colors*/
+    /*panel_flyout_parent (right side) colors*/
 
     --main_menu_right_side_color:#83d0f5;
         /*TIP! You can use the same colors as the --arrow_menu_left_side_color.*/
@@ -27,7 +27,7 @@
 
 /*Sizes*/
 
-    /*social_media_icon_flyout_parent (right side) sizes*/
+    /*panel_flyout_parent (right side) sizes*/
 
     /*width of the images (social media icons)*/
     --image_flyout_width:100px;
@@ -134,8 +134,8 @@
     transition: opacity var(--opacity-transition-duration) ease-in-out;
 }
 
-.arrow_menu_triangle :focus{
-	outline: 0;
+.arrow_menu_triangle:focus{
+	outline: none;
 }
 
 .triangle_left{
@@ -146,18 +146,14 @@
     border-left: var(--arrow_size) solid var(--triangle_color)!important;
 }
 
-#social_media_icon_flyout_parent{
+#panel_flyout_parent{
     display: flex;
     padding: var(--main_menu_right_side_padding);
-    background:var(--main_menu_right_side_color);
+    background: #28779ded;
     flex-direction:column;	
     overflow-y: auto;
     overflow-x: auto;
-}
-
-#social_media_icon_flyout_parent_parent{
-    display: flex;
-    overflow: hidden;
+	border-radius: 0px 5px 5px 5px;
 }
 
 .flyout_menu_row{

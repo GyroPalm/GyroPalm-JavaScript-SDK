@@ -25,7 +25,7 @@ $(document).ready(function() {
 	flyout_menu_active = false;
 
 	/*DON'T CHANGE THIS VARIABLE!*/
-	flyout_social_media_width = "-"+($("#social_media_icon_flyout_parent").outerWidth(true).toString()+"px");
+	flyout_social_media_width = "-"+($("#panel_flyout_parent").outerWidth(true).toString()+"px");
 
 	/*Link check function*/
 	function isExternal(url) {
@@ -56,7 +56,7 @@ $(document).ready(function() {
 	function mediaQueryFlyoutMenu(){
 		if (window.matchMedia("(max-width:"+change_flyout_menu_to_mobile_view+")").matches) {
 			$(".social_media_icon_flyout").addClass("social_media_icon_flyout_mobile_width");
-			flyout_social_media_width="-"+($("#social_media_icon_flyout_parent").outerWidth(true).toString()+"px");
+			flyout_social_media_width="-"+($("#panel_flyout_parent").outerWidth(true).toString()+"px");
 			if(flyout_menu_side==="left") {
 				$(".social_media_margin_pseudo").css("margin-left",flyout_social_media_width);
 			}
@@ -76,7 +76,7 @@ $(document).ready(function() {
 	if(use_flyout_menu_to_mobile_view===true){
 		$(window).on('resize', function(){	
 			mediaQueryFlyoutMenu();
-			flyout_social_media_width="-"+($("#social_media_icon_flyout_parent").outerWidth(true).toString()+"px");
+			flyout_social_media_width="-"+($("#panel_flyout_parent").outerWidth(true).toString()+"px");
 			flyout_menu_active=false;
 				if(flyout_menu_side==="left") {
 					$(".arrow_menu_triangle").removeClass("triangle_left");
