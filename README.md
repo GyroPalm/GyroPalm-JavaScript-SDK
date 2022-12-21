@@ -88,12 +88,20 @@ script.src = 'https://cdn.jsdelivr.net/gh/GyroPalm/GyroPalm-JavaScript-SDK@lates
 document.head.appendChild(script);
 ```
 
+### Load GyroPalm Vertex on a modern website ###
+```javascript
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = 'https://app.gyropalm.com/api/sdk/javascript/gui/gyropalmgui.js';
+document.head.appendChild(script);
+```
+
 You can choose to load the code above using a Chrome extension such as [Run JavaScript](https://chrome.google.com/webstore/detail/run-javascript/lmilalhkkdhfieeienjbiicclobibjao) or by writing your own custom Chrome extension. Alternatively, you can run the code in the browser's Developer Console. Once the SDK is loaded, you can create a new instance of the `GyroPalm()` class and attach the event callbacks as needed.
 
 By writing additional code in the event callbacks, you can make different websites respond to your various GyroPalm gestures.
 
 ## Copyright and License ##
-The MIT License (MIT) Copyright (c) 2015-2021 by GyroPalm, LLC. Code written by Dominick Lee for GyroPalm.
+The MIT License (MIT) Copyright (c) 2015-2022 by GyroPalm, LLC. Code written by Dominick Lee for GyroPalm.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
