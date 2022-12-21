@@ -81,9 +81,9 @@
 		$("#btnRegisterEvents").on("click", function(e) {
 			e.preventDefault();
 
-			gp.setEventCallback(appendOutput);
-			gp.setConnectionCallback(appendOutput);
-			gp.setVerboseCallback(appendOutput);
+			gp.addEventCallback(appendOutput);
+			gp.addConnectionCallback(appendOutput);
+			gp.addVerboseCallback(appendOutput);
 			eventsRegistered = true;
 			showAlert("Realtime callbacks registered successfully", "success");
 		});
@@ -241,13 +241,13 @@ gp.connect();
 			<i class="text-muted">To receive incoming events, define your callback functions and register the callback events.</i><br />
 <code>
 // Run "onEventReceived" callback when new msg
-gp.setEventCallback(onEventReceived);
+gp.addEventCallback(onEventReceived);
 
 // Run "onConnection" callback when connected/disconnected
-gp.setConnectionCallback(onConnection);
+gp.addConnectionCallback(onConnection);
 
 // Optional. If you want to retrieve verbose messages
-gp.setVerboseCallback(onVerbose);
+gp.addVerboseCallback(onVerbose);
 
 // Example functions to print out your callbacks:
 
