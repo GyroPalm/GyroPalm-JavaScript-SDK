@@ -111,17 +111,18 @@
 }
 
 .text_flyout{
-    padding: var(--text_flyout_margin);
+    padding-top: 5px;
     display: flex;
     font-family: var(--flyout_menu_font);
-    font-size: var(--flyout_menu_font-size);
+    font-size: 12px;
     color: var(--flyout_menu_font_color);
+	margin-left: auto;
+    margin-right: 0;
 }
 
 .text_flyout a{
     text-decoration: none;
-    color: var(--flyout_menu_font_color);
-    transition: opacity var(--opacity-transition-duration) ease-in-out;
+    color: #b8eaff;
 }
 
 .pointer{
@@ -154,6 +155,7 @@
     overflow-y: auto;
     overflow-x: auto;
 	border-radius: 0px 5px 5px 5px;
+	border: 1px #009eae solid;
 }
 
 .flyout_menu_row{
@@ -170,4 +172,265 @@
 
 .hide_flyout_menu_onload{
     visibility: hidden;
+}
+
+.logo_img {  
+	width: 200px;
+	user-drag: none;  
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	pointer-events: none;
+}
+
+.center_logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100%;
+	object-fit: contain;
+}
+
+/* Add styles for the button container */
+.gpbtn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  text-decoration: none; /* Remove the underline */
+  color: inherit; /* Use the same color as the parent element */
+  font-family: Arial; /* Use the same font as the parent element */
+  display: block; /* Make the button a block element */
+}
+
+/* Add styles for the primary button variant */
+.gpbtn-primary {
+  color: #fff;
+  background-color: #146bce;
+  border-color: #007bff;
+}
+
+/* Add hover styles for the button */
+.gpbtn:hover {
+  color: #fff;
+  background-color: #145eb1;
+  border-color: #0062cc;
+}
+
+/* Add focus styles for the button */
+.gpbtn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.gpp-2 {
+  width: 100%;
+  padding: 0.6rem; /* Add padding of 0.5rem */
+}
+
+.gp-hidden {
+    display: none !important;
+}
+
+.gp-rounded {
+    background-color: #236382ed;
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 0.8rem 0.1rem;
+	width: 100%;
+    cursor: default;
+}
+
+.gp-textlbl {
+	text-decoration: none;
+    color: #cdeaf6;
+    transition: opacity var(--opacity-transition-duration) ease-in-out;
+    font-family: var(--flyout_menu_font);
+    font-size: 14px;
+	line-height: 20px;
+}
+
+.gp-textlg {
+	font-size: 18px;
+    font-weight: 600;
+	padding-bottom: 0.5rem;
+}
+
+div.gp-online-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  background-color: #00cdff;
+  border-radius: 50%;
+  position: relative;
+}
+
+span.gp-blink {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: #0fcc45;
+  opacity: 0.7;
+  border-radius: 50%;
+  animation: blink 1s linear infinite;
+}
+
+.gp-online-text {
+  display: inline;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #cdeaf6;
+  text-shadow: 0px 3px 6px rgba(150, 150, 150, 0.5);
+  position: relative;
+  cursor: default;
+}
+
+/*Animations*/
+
+@keyframes blink {
+  100% { transform: scale(2, 2); 
+          opacity: 0;
+        }
+}
+
+textarea.gplogtext {
+  position: relative;
+  font-size: 10pt;
+  border: 0;
+  border-radius: 5px;
+  resize: none;
+  background-color: #333; /* Dark grey */
+  width: 190px; /* Full width */
+  padding: 0.5rem;
+  color: #ddd;
+  cursor: default;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.gptextlog-cont {
+  position: relative; /* This is important */
+  top: -24px;
+  right: 2px;
+}
+
+.gpbtn-sm {
+  position: absolute;
+  border: none;
+  background-color: #4c4c4c;
+  cursor: pointer;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 3px;
+  width: 28px;
+}
+
+.gpbtn-sm:focus {
+  outline: none;
+}
+
+.gpbtn-sm:hover {
+  background-color: #00CDFF;
+}
+
+.gpcode-btn {
+  top: 0;
+  right: 60px;
+}
+
+.gptrash-btn {
+  top: 0;
+  right: 30px;
+}
+
+.gpexpand-btn {
+  top: 0;
+  right: 0;
+}
+
+.flyout_text_a {
+  margin-left: 1em;
+}
+
+.gp-prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+/* The Modal (background) */
+.gpguimodal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 99999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.gpguimodal-content {
+  display: none; /* Hidden by default */
+  background-color: #28779df7;
+  padding: 20px;
+  border: 1px solid #009eae;
+  border-radius: 5px 5px 5px 5px;
+  margin-top: 35px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100px;
+  width: 75%;
+  color: #cdeaf6;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.gpguimodal-box {
+	margin-top: 20px;
+}
+
+/* The Close Button */
+.gpgui-close {
+  color: #eee;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: relative;
+  top: -10px;
+}
+
+.gpgui-close:hover,
+.gpgui-close:focus {
+  color: #00CDFF;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#gpgui-customcode {
+  min-height: 250px;
 }

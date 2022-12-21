@@ -92,7 +92,7 @@ $(document).ready(function() {
 	}
 
 	/* When you click on a link.*/
-	$("#flyout_menu").on(
+	$("#gpBtnArrow").on(
 	"click keypress", function () {
 		if(flyout_menu_active===false) {
 			flyout_menu_active=true;
@@ -108,6 +108,7 @@ $(document).ready(function() {
 			}
 		}
 		else {
+			$("#gpeventtext").css('width', '190px');
 			flyout_menu_active=false;
 			if(flyout_menu_side==="left") {
 				$(".social_media_margin_pseudo").animate({marginLeft: flyout_social_media_width},flyout_animation_speed);
@@ -129,7 +130,7 @@ $(document).ready(function() {
 			flyout_text_link = $(this).find("a").attr("href");
 		}
 		if((isExternal(flyout_text_link)==true) || (flyout_text_link.includes("/")==true) || (flyout_text_link.includes(".html")==true)){
-			window.location.href = flyout_text_link;
+			//window.location.href = flyout_text_link;
 		}
 		else{
 			$("html, body").animate({
@@ -158,6 +159,7 @@ $(document).ready(function() {
 			if(flyout_menu_active===true) {
 				if ($(".arrow_menu_triangle").is(":focus")||$(".flyout_text_a").is(":focus")||$(".social_media_icon_flyout").is(":focus")) {
 					flyout_menu_active=false;
+					$("#gpeventtext").css('width', '190px');
 					if(flyout_menu_side==="left") {
 						$(".social_media_margin_pseudo").animate({marginLeft: flyout_social_media_width},flyout_animation_speed);
 						$(".arrow_menu_triangle").removeClass("triangle_left");
