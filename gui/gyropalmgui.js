@@ -321,7 +321,7 @@ function jQueryComplete() {
 					}
 					gpFetchJsCode();
 					gpCustomJSPlugin = gpGetCustomEditorCode();
-					gpEvalReady = true;
+					gpEvalReady = true;	//indicate to global eval the code
 				}, onFailed);
 			}
 		}, onFailed);
@@ -332,10 +332,20 @@ function jQueryComplete() {
 			gpSignOutUser();
 		});
 		$("#gpguibtn-code").click(function() {
-			if ($('#gpcodemodal').is(":visible")) {
-				gpShowCodeModal(false);
-			} else {
-				gpShowCodeModal(true);
+			if ($('#gpgui-appname').text() == "Plugin: N/A") { 
+				let encodedUrl = encodeURIComponent('http(s?)://(.*)' + window.location.hostname + '(.*)');
+				let pageTitle = document.title;
+				pageTitle = pageTitle.replace(/[^\w\s]/gi, '');	//remove special chars
+				pageTitle = pageTitle.replace(/\s+/g,' ').trim();	//remove extra spaces
+				pageTitle = encodeURIComponent(pageTitle);
+				window.location.href = 'https://app.gyropalm.com/beta/vertex/edit/new?target='+encodedUrl+'&name='+pageTitle+'&launch='+window.location.href;
+			}
+			else {
+				if ($('#gpcodemodal').is(":visible")) {
+					gpShowCodeModal(false);
+				} else {
+					gpShowCodeModal(true);
+				}
 			}
 		});
 		$("#gpguibtn-trash").click(function() {
