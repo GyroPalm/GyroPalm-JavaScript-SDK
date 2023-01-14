@@ -115,11 +115,12 @@ function attachPageVisibility() {
   document.addEventListener('visibilitychange', function() {
 	var pageTitle = $(document).attr('title');
 	var pageDomain = location.protocol + '//' + location.host;
+	var pageURL = location.href;
     if (document.hidden) {	//tab hidden
-	  let pageInfo = {visible:false, title:pageTitle, domain:pageDomain};
+	  let pageInfo = {visible:false, title:pageTitle, domain:pageDomain, url:pageURL};
 	  appendToLog(pageInfo);
     } else {	//tab visible
-      let pageInfo = {visible:true, title:pageTitle, domain:pageDomain};
+      let pageInfo = {visible:true, title:pageTitle, domain:pageDomain, url:pageURL};
 	  appendToLog(pageInfo);
     }
   });
@@ -172,7 +173,50 @@ function gpShowCodeModal(setVisible) {
 	}
 }
 
+function gpSetCustomEditorCode(code) {
+	var gpguicustomeditor = ace.edit($('#gpgui-customcode')[0]);
+	gpguicustomeditor.session.setValue(code);
+}
+
+function gpGetCustomEditorCode() {
+	var gpguicustomeditor = ace.edit($('#gpgui-customcode')[0]);
+	return gpguicustomeditor.session.getValue(gpguicustomeditor);
+}
+
+function gpSetPluginName(name) {
+	$('#gpgui-appname').text("Plugin: "+name);
+}
+
+function gpFetchJsCode() {
+    var gpJsPlugin = {};
+    var encodedUrl = encodeURIComponent(window.location.href);
+    $.ajax({
+        url: 'https://app.gyropalm.com/beta/vertex/getjs?url='+ encodedUrl,
+        type: 'get',
+        async: false,
+        success: function(response) {
+            try {
+                var data = JSON.parse(response);
+                if (Object.keys(data).length !== 0){
+					gpJsPlugin = data;
+                    let javascript = data.javascript;
+                    let appName = data.appName;
+					if (javascript.length > 1) {
+						gpSetCustomEditorCode(javascript);
+					}
+					gpSetPluginName(appName);
+                }
+            } catch (e) {
+                console.log("Error while parsing JSON");
+            }
+        }
+    });
+	return gpJsPlugin;
+}
+
+
 var gpObj;
+var gpEvalReady = false;
 
 // Runs after jQuery has loaded
 function jQueryComplete() {
@@ -191,7 +235,15 @@ function jQueryComplete() {
 	<div class=\"flyout_menu_row\">\r\n\
 	<div class=\"gp-rounded gp-hidden\" id=\"pnlUser\">\r\n\
 			<p class=\"gp-textlbl gp-textlg\">Hello Dominick</p>\r\n\
-			<p>[Dropdown selection here]</p>\r\n\
+			<div id=\"pnl-gpselectdev\">\r\n\
+			  <label for=\"gpselectdev-ctrl\">Your Devices</label>\r\n\
+			  <select class=\"gpselectdev-ctrl\" id=\"gpselectdev-ctrl\">\r\n\
+				<option value=\"\" disabled selected>Select a Wearable</option>\r\n\
+				<option>Lab Wearable</option>\r\n\
+				<option>Test 2</option>\r\n\
+				<option>Test 3</option>\r\n\
+			  </select>\r\n\
+			</div>\r\n\
 	</div> </div>\r\n\
 	<div class=\"flyout_menu_row\">\r\n\
 	<div class=\"gp-rounded gp-hidden\" id=\"pnlStatus\">\r\n\
@@ -214,6 +266,14 @@ function jQueryComplete() {
 				<button class=\"gpbtn-sm gptrash-btn\" id=\"gpguibtn-trash\"><i class=\"fa fa-trash\"></i></button>\r\n\
 				<button class=\"gpbtn-sm gpexpand-btn\" id=\"gpguibtn-expand\"><i class=\"fa fa-expand\"></i></button>\r\n\
 			</div>\r\n\
+			<label class=\"gpcheckcont\">Show Verbose\r\n\
+			  <input type=\"checkbox\" id=\"gpchkbx1\" checked=\"checked\">\r\n\
+			  <span class=\"gpcheckmk\"></span>\r\n\
+			</label>\r\n\
+			<label class=\"gpcheckcont\">Show Activity\r\n\
+			  <input type=\"checkbox\" id=\"gpchkbx2\">\r\n\
+			  <span class=\"gpcheckmk\"></span>\r\n\
+			</label>\r\n\
 	</div> </div>\r\n\
 	<div class=\"flyout_menu_row gp-hidden\">\r\n\
 	<a href=\"https:\/\/youtube.com\" class=\"social_media_icon_flyout pointer\"><img src=\"https:\/\/www.jqueryscript.net\/demo\/fixed-flyout-menu\/img\/social_media_icons\/youtube_logo.png\" class=\"social_media_icon_flyout_img\" alt=\"YouTube\"><\/a>\r\n                <a href=\"#\" class=\"social_media_icon_flyout pointer\"><img src=\"https:\/\/www.jqueryscript.net\/demo\/fixed-flyout-menu\/img\/social_media_icons\/reddit_logo.png\" class=\"social_media_icon_flyout_img\" alt=\"Reddit\"><\/a>\r\n            <\/div>\r\n            <div class=\"flyout_menu_row\">\r\n\
@@ -225,6 +285,7 @@ function jQueryComplete() {
 		<div id=\"gpcodemodal\" class=\"gpguimodal-content\">\r\n\
 			<span class=\"gpgui-close\">&times;</span>\r\n\
 			<div class=\"gpguimodal-box\">\r\n\
+				<h4 class=\"ml-1\" id=\"gpgui-appname\">Plugin: N/A</h4>\r\n\
 				<div class=\"flyout_menu_row\">\r\n\
 				<div class=\"gp-rounded\" id=\"pnlLogs\">\r\n\
 						<p class=\"gp-textlbl gp-textlg\">Custom Javascript</p>\r\n\
@@ -250,6 +311,19 @@ function jQueryComplete() {
 			var editor = ace.edit("gpgui-customcode");
 			editor.setTheme("ace/theme/monokai");
 			editor.session.setMode("ace/mode/javascript");
+			
+			if (localStorage.hasOwnProperty("gprealtimesession")) {	//key exists in storage
+				loadJS(baseURL+"gyropalm.min.js", () => {
+					console.log("GyroPalm SDK loaded");
+					var respObj = JSON.parse(localStorage.gprealtimesession);
+					if ("masterToken" in respObj) {
+						gpObj = new GyroPalm(respObj.masterToken);
+					}
+					gpFetchJsCode();
+					gpCustomJSPlugin = gpGetCustomEditorCode();
+					gpEvalReady = true;
+				}, onFailed);
+			}
 		}, onFailed);
 		$("#btnGPLogin").click(function() {
 			openLoginWindow();
@@ -286,14 +360,14 @@ function jQueryComplete() {
 		});
 		updateView();
 		attachPageVisibility();
-		if (localStorage.hasOwnProperty("gprealtimesession")) {	//key exists in storage
-			loadJS(baseURL+"gyropalm.min.js", () => {
-				console.log("GyroPalm SDK loaded");
-				var respObj = JSON.parse(localStorage.gprealtimesession);
-				if ("masterToken" in respObj) {
-					gpObj = new GyroPalm(respObj.masterToken);
-				}
-			}, onFailed);
-		}
 	});
 }
+
+var tmrWaitToEvalJS = setInterval(function() {
+	if (gpEvalReady) {
+		//eval(gpCustomJSPlugin);
+		jQuery.globalEval(gpCustomJSPlugin);
+		clearInterval(tmrWaitToEvalJS);
+		gpEvalReady = false;
+	}
+}, 1000);

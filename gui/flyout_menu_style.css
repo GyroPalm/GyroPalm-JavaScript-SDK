@@ -61,7 +61,7 @@
     display: flex;
     top: 50%;
     transform: translateY(-50%);
-    z-index: 999!important;
+    z-index: 9999!important;
     max-height: 100%;
 }
 
@@ -118,6 +118,8 @@
     color: var(--flyout_menu_font_color);
 	margin-left: auto;
     margin-right: 0;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
 }
 
 .text_flyout a{
@@ -245,7 +247,7 @@
     background-color: #236382ed;
     border-radius: 5px;
     padding: 0.5rem;
-    margin: 0.8rem 0.1rem;
+    margin: 0.4rem 0.1rem;
 	width: 100%;
     cursor: default;
 }
@@ -263,6 +265,8 @@
 	font-size: 18px;
     font-weight: 600;
 	padding-bottom: 0.5rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
 }
 
 div.gp-online-indicator {
@@ -396,10 +400,10 @@ textarea::-webkit-scrollbar-thumb {
 .gpguimodal-content {
   display: none; /* Hidden by default */
   background-color: #28779df7;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid #009eae;
   border-radius: 5px 5px 5px 5px;
-  margin-top: 35px;
+  margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
   min-height: 100px;
@@ -433,4 +437,108 @@ textarea::-webkit-scrollbar-thumb {
 
 #gpgui-customcode {
   min-height: 250px;
+}
+
+/* Checkbox container */
+.gpcheckcont {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-family: 'Rubik', sans-serif;
+  font-size: 13px;
+  color: #cdeaf6;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-left: 3px;
+}
+
+/* Hide the browser's default checkbox */
+.gpcheckcont input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.gpcheckmk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.gpcheckcont:hover input ~ .gpcheckmk {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.gpcheckcont input:checked ~ .gpcheckmk {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.gpcheckmk:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.gpcheckcont input:checked ~ .gpcheckmk:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.gpcheckcont .gpcheckmk:after {
+  left: 6px;
+  top: 2px;
+  width: 3px;
+  height: 7px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* CSS to style the dropdown select element */
+.gpselectdev-ctrl {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-family: 'Rubik', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #ddd;
+  background-color: #333;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+label[for="gpselectdev-ctrl"] {
+  font-family: 'Rubik', sans-serif;
+  font-size: 13px;
+  color: #cdeaf6;
+  display: none;
+}
+
+#gpselectdev-ctrl:focus {
+  outline: 0; /* disable outline */
+}
+
+#pnl-gpselectdev {
+  text-align: center;
 }
