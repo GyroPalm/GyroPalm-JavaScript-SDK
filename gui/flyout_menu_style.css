@@ -269,6 +269,15 @@
     margin-bottom: 0.2rem;
 }
 
+.gp-texth4 {
+	font-size: 1.5rem;
+	margin-bottom: .5rem;
+	font-weight: 500;
+	line-height: 1.2;
+	margin-top: 0;
+	color: #cdeaf6;
+}
+
 div.gp-online-indicator {
   display: inline-block;
   width: 10px;

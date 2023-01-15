@@ -187,11 +187,11 @@ function gpSetPluginName(name) {
 	$('#gpgui-appname').text("Plugin: "+name);
 }
 
-function gpFetchJsCode() {
+function gpFetchJsCode(mT) {
     var gpJsPlugin = {};
     var encodedUrl = encodeURIComponent(window.location.href);
     $.ajax({
-        url: 'https://app.gyropalm.com/beta/vertex/getjs?url='+ encodedUrl,
+        url: 'https://app.gyropalm.com/beta/vertex/getjs?url='+ encodedUrl+'&mt='+mT,
         type: 'get',
         async: false,
         success: function(response) {
@@ -201,13 +201,19 @@ function gpFetchJsCode() {
 					gpJsPlugin = data;
                     let javascript = data.javascript;
                     let appName = data.appName;
+                    let appID = data.appID;
 					if (javascript.length > 1) {
 						gpSetCustomEditorCode(javascript);
 					}
 					gpSetPluginName(appName);
+					$('#gpVertAppID').val(appID);
                 }
             } catch (e) {
-                console.log("Error while parsing JSON");
+				if (response.startsWith("<!DOCTYPE html>")) {
+					console.log("Please sign into GyroPalm to use Vertex");
+				} else {
+					console.log("No plugin found for this site");
+				}
             }
         }
     });
@@ -262,9 +268,9 @@ function jQueryComplete() {
 			<p class=\"gp-textlbl gp-textlg\">Event Logs</p>\r\n\
 				<textarea readonly class=\"gplogtext\" rows=\"6\" id=\"gpeventtext\"></textarea>\r\n\
 			<div class=\"gptextlog-cont\">\r\n\
-				<button class=\"gpbtn-sm gpcode-btn\" id=\"gpguibtn-code\"><i class=\"fa fa-code\"></i></button>\r\n\
-				<button class=\"gpbtn-sm gptrash-btn\" id=\"gpguibtn-trash\"><i class=\"fa fa-trash\"></i></button>\r\n\
-				<button class=\"gpbtn-sm gpexpand-btn\" id=\"gpguibtn-expand\"><i class=\"fa fa-expand\"></i></button>\r\n\
+				<button class=\"gpbtn-sm gpcode-btn\" id=\"gpguibtn-code\"><i class=\"fa fa-code\" title=\"Custom Code\"></i></button>\r\n\
+				<button class=\"gpbtn-sm gptrash-btn\" id=\"gpguibtn-trash\"><i class=\"fa fa-trash\" title=\"Clear Log\"></i></button>\r\n\
+				<button class=\"gpbtn-sm gpexpand-btn\" id=\"gpguibtn-expand\"><i class=\"fa fa-expand\" title=\"Expand Log\"></i></button>\r\n\
 			</div>\r\n\
 			<label class=\"gpcheckcont\">Show Verbose\r\n\
 			  <input type=\"checkbox\" id=\"gpchkbx1\" checked=\"checked\">\r\n\
@@ -285,14 +291,16 @@ function jQueryComplete() {
 		<div id=\"gpcodemodal\" class=\"gpguimodal-content\">\r\n\
 			<span class=\"gpgui-close\">&times;</span>\r\n\
 			<div class=\"gpguimodal-box\">\r\n\
-				<h4 class=\"ml-1\" id=\"gpgui-appname\">Plugin: N/A</h4>\r\n\
+				<h4 class=\"gp-texth4 ml-1\" id=\"gpgui-appname\">Plugin: N/A</h4>\r\n\
 				<div class=\"flyout_menu_row\">\r\n\
 				<div class=\"gp-rounded\" id=\"pnlLogs\">\r\n\
 						<p class=\"gp-textlbl gp-textlg\">Custom Javascript</p>\r\n\
+							<input type=\"hidden\" id=\"gpVertAppID\" name=\"gpVertAppID\" value=\"\">\r\n\
 							<div id=\"gpgui-customcode\">//Code entered here is specific to you on this site\n//loadJS(\"https://example.com/script.js\"); //Replace with your Javascript URL\n</div>\r\n\
 						<div class=\"gptextlog-cont\">\r\n\
-							<button class=\"gpbtn-sm gptrash-btn\" id=\"gpguibtn-trash\"><i class=\"fa fa-trash\"></i></button>\r\n\
-							<button class=\"gpbtn-sm gpexpand-btn\" id=\"gpguibtn-expand\"><i class=\"fa fa-save\"></i></button>\r\n\
+							<button class=\"gpbtn-sm gpcode-btn\" id=\"gpguibtn-editplugin\"><i class=\"fa fa-pencil\" title=\"Edit Plugin\"></i></button>\r\n\
+							<button class=\"gpbtn-sm gptrash-btn\" id=\"gpguibtn-clearcode\" title=\"Clear Code\"><i class=\"fa fa-trash\"></i></button>\r\n\
+							<button class=\"gpbtn-sm gpexpand-btn\" id=\"gpguibtn-savecode\" title=\"Save Code\"><i class=\"fa fa-save\"></i></button>\r\n\
 						</div>\r\n\
 				</div> </div>\r\n\
 			</div>\r\n\
@@ -303,6 +311,8 @@ function jQueryComplete() {
 	$(document).ready(function() {
 		loadCSS(baseURL+"gui/flyout_menu_style.css");	// Load CSS
 		loadCSS("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");	// Load CSS
+		loadCSS("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css");	// Load CSS
+		loadJS("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js");
 		loadJS(baseURL+"gui/flyout_menu_code.js", () => {
 			console.log("flyout loaded");
 		}, onFailed);
@@ -319,7 +329,7 @@ function jQueryComplete() {
 					if ("masterToken" in respObj) {
 						gpObj = new GyroPalm(respObj.masterToken);
 					}
-					gpFetchJsCode();
+					gpFetchJsCode(respObj.masterToken);
 					gpCustomJSPlugin = gpGetCustomEditorCode();
 					gpEvalReady = true;	//indicate to global eval the code
 				}, onFailed);
@@ -365,8 +375,37 @@ function jQueryComplete() {
 			  }, 200); // 200ms duration
 			}
 		});
+		$("#gpguibtn-editplugin").click(function() {
+			let appID = $('#gpVertAppID').val();
+			window.location.href = 'https://app.gyropalm.com/beta/vertex/edit/'+appID;
+		});
+		$("#gpguibtn-clearcode").click(function() {
+			gpSetCustomEditorCode("//Code entered here is specific to you on this site\n//loadJS(\"https://example.com/script.js\"); //Replace with your Javascript URL\n");
+		});
+		$("#gpguibtn-savecode").click(function() {
+			console.log("WIP save code");
+		});
 		$(".gpgui-close").click(function() {
-			gpShowCodeModal(false);
+			$.confirm({
+				title: 'Save Code',
+				content: 'Do you want to save your changes?',
+				type: 'blue',
+				theme: 'dark',
+				buttons: {
+					yes: {
+						btnClass: 'btn-blue',
+						keys: ['enter', 'shift'],
+						action: function(){
+							$.alert('Changes saved!');
+						}
+					},
+					no: function () {
+						gpShowCodeModal(false);
+					},
+					cancel: function () {	//do nothing
+					}
+				}
+			});
 		});
 		updateView();
 		attachPageVisibility();
@@ -375,8 +414,11 @@ function jQueryComplete() {
 
 var tmrWaitToEvalJS = setInterval(function() {
 	if (gpEvalReady) {
-		//eval(gpCustomJSPlugin);
-		jQuery.globalEval(gpCustomJSPlugin);
+		try {
+			jQuery.globalEval(gpCustomJSPlugin);
+		} catch (err) {
+			console.log("This website has a security policy that prevents GyroPalm Vertex from working properly");
+		}
 		clearInterval(tmrWaitToEvalJS);
 		gpEvalReady = false;
 	}
