@@ -204,6 +204,7 @@ function gpFetchJsCode(mT) {
                     let appID = data.appID;
 					if (javascript.length > 1) {
 						gpSetCustomEditorCode(javascript);
+						gpJsEditorCodeChanged = false;
 					}
 					gpSetPluginName(appName);
 					$('#gpVertAppID').val(appID);
@@ -220,9 +221,77 @@ function gpFetchJsCode(mT) {
 	return gpJsPlugin;
 }
 
+function gpUpdateJsCode(mT) {
+    var result;
+	let pluginID = $('#gpVertAppID').val();
+	let jsCode = gpGetCustomEditorCode();
+    $.ajax({
+        url: 'https://app.gyropalm.com/beta/vertex/updatejs/' + pluginID,
+        type: 'POST',
+		async: false,
+        data: { mT: mT, js: jsCode },
+        success: function(response) {
+            if (response === 'true') {
+                result = true;
+            } else {
+                result = false;
+            }
+        }
+    });
+    return result;
+}
+
+function gpSaveCodeBtn() {
+	if (localStorage.hasOwnProperty("gprealtimesession")) {
+		var respObj = JSON.parse(localStorage.gprealtimesession);
+		if ("masterToken" in respObj) {
+			let res = gpUpdateJsCode(respObj.masterToken);
+			if (res) {
+				$.confirm({
+					title: 'Saved successfully!',
+					content: 'Code has been updated. Please refresh the browser to see changes.',
+					autoClose: 'ok|2500',
+					backgroundDismiss: true,
+					type: 'blue',
+					theme: 'dark',
+					buttons: {
+						ok: {
+							btnClass: 'btn-blue',
+							keys: ['enter', 'esc'],
+							action: function() {}
+						}
+					}
+				});
+				gpJsEditorCodeChanged = false;
+			} else {
+				$.alert({
+					title: 'Failed to Save Code',
+					content: 'Sorry, an error has occurred while saving.',
+					type: 'red',
+					theme: 'dark',
+				});
+			}
+		} else {
+			$.alert({
+				title: 'Failed to Save Code',
+				content: 'Sorry, you must be logged in to save code.',
+				type: 'red',
+				theme: 'dark',
+			});
+		}
+	} else {
+		$.alert({
+			title: 'Failed to Save Code',
+			content: 'Sorry, you must be logged in to save code.',
+			type: 'red',
+			theme: 'dark',
+		});
+	}
+}
 
 var gpObj;
 var gpEvalReady = false;
+var gpJsEditorCodeChanged = false;
 
 // Runs after jQuery has loaded
 function jQueryComplete() {
@@ -334,6 +403,11 @@ function jQueryComplete() {
 					gpEvalReady = true;	//indicate to global eval the code
 				}, onFailed);
 			}
+			
+			var gpguicustomeditor = ace.edit($('#gpgui-customcode')[0]);
+			gpguicustomeditor.session.on('change', function(delta) {
+				gpJsEditorCodeChanged = true;	//set flag to remind user to save code
+			});
 		}, onFailed);
 		$("#btnGPLogin").click(function() {
 			openLoginWindow();
@@ -383,29 +457,35 @@ function jQueryComplete() {
 			gpSetCustomEditorCode("//Code entered here is specific to you on this site\n//loadJS(\"https://example.com/script.js\"); //Replace with your Javascript URL\n");
 		});
 		$("#gpguibtn-savecode").click(function() {
-			console.log("WIP save code");
+			gpSaveCodeBtn();
 		});
 		$(".gpgui-close").click(function() {
-			$.confirm({
-				title: 'Save Code',
-				content: 'Do you want to save your changes?',
-				type: 'blue',
-				theme: 'dark',
-				buttons: {
-					yes: {
-						btnClass: 'btn-blue',
-						keys: ['enter', 'shift'],
-						action: function(){
-							$.alert('Changes saved!');
+			if (gpJsEditorCodeChanged) {
+				$.confirm({
+					title: 'Save Code',
+					content: 'Do you want to save your changes?',
+					type: 'blue',
+					theme: 'dark',
+					buttons: {
+						yes: {
+							btnClass: 'btn-blue',
+							keys: ['enter', 'shift'],
+							action: function(){
+								gpShowCodeModal(false);
+								gpSaveCodeBtn();
+							}
+						},
+						no: function () {
+							gpShowCodeModal(false);
+						},
+						cancel: function () {	//do nothing
 						}
-					},
-					no: function () {
-						gpShowCodeModal(false);
-					},
-					cancel: function () {	//do nothing
 					}
-				}
-			});
+				});
+				gpJsEditorCodeChanged = false;
+			} else {
+				gpShowCodeModal(false);
+			}
 		});
 		updateView();
 		attachPageVisibility();
