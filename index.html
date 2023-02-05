@@ -141,6 +141,19 @@
 
 			$("#txtSend").val("{\"command\":\"setTime\"}");
 		});
+		
+		$("#btnSyncGestures").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("{\"command\":\"syncGestures\"}");
+		});
+		
+		$("#btnListGestures").on("click", async function(e) {
+			e.preventDefault();
+
+			$("#txtSend").val("{\"command\":\"listGestures\"}");
+		});
+		
 	});
 
 
@@ -287,6 +300,8 @@ function onConnection(obj) {
 					<li><a id="btnVibrateHold">Vibrate Hold</a></li>
 					<li><a id="btnSendAlert">Send Alert Msg</a></li>
 					<li><a id="btnSetTime">Set Local Time</a></li>
+					<li><a id="btnSyncGestures">Request Sync Gestures</a></li>
+					<li><a id="btnListGestures">Request List Gestures</a></li>
 				  </ul>
 				</div>
 			</div>
