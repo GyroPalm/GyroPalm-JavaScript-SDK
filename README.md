@@ -32,73 +32,9 @@ Download the latest release of `gyropalm.min.js` on the [GitHub releases page](h
 <script src="gyropalm.min.js"></script>
 ```
 
-## Release Notes ##
+### Full Documentation on GyroPalm SDK Docs ###
+The latest documentation for GyroPalm's Javascript SDK can be found on the official [GyroPalm SDK Docs website](https://app.gyropalm.com/sdk/docs/javascript/). You will find relase notes, example code, and explanations.
 
-**Version 1.0.0** - Beta release on 11/3/21
-- Initial release candidate
-- Primary objects initiated
-- Able to list account info
-- Able to list wearables
-- Able to establish connection and reconnect
-
-## Demo and Documentation ##
-This README serves as a basic guide to setting up the SDK. For detailed explanations, code samples, and object references, please see the full documentation on GyroPalm SDK Docs.
-
-- Basic Demo
-- Full Documentation
-
-## Basic Usage ##
-To instantiate a GyroPalm object, first include the `gyropalm.min.js` library. Then instantiate the object as follows:
-
-```javascript
-<script>
-	function printData(obj) {	//example callback
-		console.log(obj);
-	}
-
-	var gp = new GyroPalm();	//basic instantiation
-	gp.enableVerbose();	//enable console messages
-	gp.getAccountInfo("c188888888", printData);	//show account info object
-	gp.getWearables("", printData);	//no need to respecify the API key
-	gp.connect("gp123123123");	//connect to wearableID
-
-	// OR you can choose to declare wearableID and API key first
-	var gp = new GyroPalm("gp123123123", "c188888888");	//advanced instantiation
-	gp.enableVerbose();	//enable console messages
-	gp.getAccountInfo("", printData);	//show account info object
-	gp.connect();	//connect to wearableID above
-</script>
-```
-
-## Using GyroPalm JS SDK on other websites ##
-GyroPalm is capable of running JavaScript on other websites to enhance accessibility and provide a hands-free interface. By using this functionality, you agree to use the SDK at your own risk. You also agree to comply with local and international laws and regulations.
-
-The GyroPalm JS SDK is a powerful tool that enables authorized users to run, trigger, and fetch data on websites and web apps that they have access to. With a few lines of JavaScript, you can implement a Chrome or Firefox extension that can make GyroPalm work with virtually any website or platform. For example, users can perform gestures on a GyroPalm wearable to scroll, trigger buttons, fill forms, etc.
-
-### Load GyroPalm JS SDK on a site using jQuery ###
-```javascript
-$.getScript('https://cdn.jsdelivr.net/gh/GyroPalm/GyroPalm-JavaScript-SDK@latest/gyropalm.min.js')
-```
-
-### Load GyroPalm JS SDK on a site without jQuery ###
-```javascript
-var script = document.createElement('script');
-script.type = 'text/javascript';
-script.src = 'https://cdn.jsdelivr.net/gh/GyroPalm/GyroPalm-JavaScript-SDK@latest/gyropalm.min.js';
-document.head.appendChild(script);
-```
-
-### Load GyroPalm Vertex on a modern website ###
-```javascript
-var script = document.createElement('script');
-script.type = 'text/javascript';
-script.src = 'https://app.gyropalm.com/api/sdk/javascript/gui/gyropalmgui.js';
-document.head.appendChild(script);
-```
-
-You can choose to load the code above using a Chrome extension such as [Run JavaScript](https://chrome.google.com/webstore/detail/run-javascript/lmilalhkkdhfieeienjbiicclobibjao) or by writing your own custom Chrome extension. Alternatively, you can run the code in the browser's Developer Console. Once the SDK is loaded, you can create a new instance of the `GyroPalm()` class and attach the event callbacks as needed.
-
-By writing additional code in the event callbacks, you can make different websites respond to your various GyroPalm gestures.
 
 ## Copyright and License ##
 The MIT License (MIT) Copyright (c) 2015-2022 by GyroPalm, LLC. Code written by Dominick Lee for GyroPalm.
