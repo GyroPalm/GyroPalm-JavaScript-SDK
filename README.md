@@ -7,7 +7,7 @@ The GyroPalm JavaScript software development kit (SDK) enables developers to wir
 This library exposes the GyroPalm object, which encapsulates secure websockets (WSS) with our real-time low latency server. Using enhanced methods and function callbacks, gestures, commands, and other data can be retrieved from the wearable in milliseconds. Using the GyroPalm object, developers can write applications that retrieve information about a user as well as their wearables.
 
 ## Requirements ##
-To implement this SDK for its intended use, it is highly recommended that the developer has a GyroPalm Developer Kit or equivalent GyroPalm package to do proper testing. To order one or more wearables, visit the [GyroPalm Online store](https://gyropalm.com/order/).
+To implement this SDK for its intended use, it is highly recommended that the developer has a GyroPalm Developer Kit or equivalent GyroPalm package to do proper testing. To order one or more wearables, visit the [GyroPalm Online store](https://store.gyropalm.com).
 
 In addition, both the end-user must use a modern web browser such as Chrome, Firefox, Edge, or Safari with HTML5 capabilities. The developer may choose to use jQuery or equivalent library alongside this SDK for convenience, but it is not required.
 
@@ -37,7 +37,7 @@ The latest documentation for GyroPalm's Javascript SDK can be found on the offic
 
 
 ## Copyright and License ##
-The MIT License (MIT) Copyright (c) 2015-2022 by GyroPalm, LLC. Code written by Dominick Lee for GyroPalm.
+The MIT License (MIT) Copyright (c) 2015-2024 by GyroPalm, LLC. Code written by Dominick Lee for GyroPalm.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
